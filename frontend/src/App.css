@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
 #root {
+  font-family: "Inter", sans-serif;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0rem;
   text-align: center;
 }
 
@@ -39,4 +42,34 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.svg{
+  height: 4vh;
+}
+
+.avatar{
+  height: 8vh;
+}
+
+.color-input{
+  width: 4vw;
+  height: 3em;
+  border-radius: 50%;
+}
+
+.color-input:hover{
+  transition: 0.2s;
+  transform: scale(1.12);
+  cursor: pointer;
+}
+
+.input-grp>img:hover{
+  transition: 0.2s;
+  transform: scale(1.12);
+  cursor: pointer;
+}
+
+.offcanvas-body>ul>li:hover{
+  background-color: #888;
 }
