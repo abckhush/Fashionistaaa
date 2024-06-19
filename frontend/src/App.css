@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-
+.button:hover{
+  border: none;
+}
 #root {
   font-family: "Inter", sans-serif;
   max-width: 1280px;
@@ -72,4 +74,23 @@
 
 .offcanvas-body>ul>li:hover{
   background-color: #888;
+}
+
+.clicked{
+  background-color: #312f2f;
+}
+
+.unclicked{
+  background-color: #969696;
+}
+
+
+
+button:focus-visible{
+  border: none;
+}
+
+.avatar:hover{
+  cursor: pointer;
+  
 }

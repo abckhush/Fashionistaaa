@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from './Components/Home.jsx';
+import Home from './Components/Home/Home.jsx';
 import Login from './Components/Login.jsx';
 import Signup from './Components/SignUp.jsx';
 import Navbar from './Components/Navbar/Navbar.jsx';
@@ -9,6 +9,7 @@ import InputColorGenerator from './Components/AIColorGenerate/InputColorGenerato
 import Contests from './Components/Contests/Contests.jsx';
 import Designs from './Components/Designs/Designs.jsx';
 import Footer from './Components/Footer/Footer.jsx';
+import ProductPage from './Components/Home/ProductPage.jsx';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path='/generateDesigns' element={<Designs/>}/>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/designInfo" element={<ProductPage />} />
     </Routes>
     <Footer/>
     </Router>
