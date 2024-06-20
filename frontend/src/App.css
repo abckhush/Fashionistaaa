@@ -94,3 +94,21 @@ button:focus-visible{
   cursor: pointer;
   
 }
+
+input:focus-visible {
+  outline: none;
+}
+
+
+
+.hover-black:hover{
+  background: black;
+  color: white;
+  cursor: pointer;
+}
+
+.hover-gray:hover{
+  background-color: #a8a4a4;
+  color: white;
+  cursor: pointer;
+}

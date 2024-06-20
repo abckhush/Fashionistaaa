@@ -1,8 +1,8 @@
 import React from 'react'
 import design from '../../assets/image/design.jpeg'
 import avatar from '../../assets/image/avatar.jpg'
-import heart from '../../assets/svg/heart.svg'
-import comment from '../../assets/svg/comment.svg'
+import heart from '../../assets/svg/heart-filled.svg'
+import comment from '../../assets/svg/comment-filled.svg'
 import { Link } from 'react-router-dom'
 
 const DesignCard = ({onClick}) => {

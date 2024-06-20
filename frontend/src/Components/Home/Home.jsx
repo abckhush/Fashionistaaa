@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
     const navigate = useNavigate()
-    const [current , setCurrent] = useState(null)
+    const [current , setCurrent] = useState('artists you follow')
     const onClickArtist =()=>{
         setCurrent('artists you follow')
     }
