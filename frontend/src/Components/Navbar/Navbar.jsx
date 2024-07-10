@@ -5,9 +5,19 @@ import logoutSvg from '../../assets/svg/logout.svg'
 import savedSvg from '../../assets/svg/saved.svg'
 import searchSvg from '../../assets/svg/search.svg'
 import avatar from '../../assets/image/avatar.jpg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
+    const navigate = useNavigate();
+
+    function handleAvatarClick() {
+        if (localStorage.getItem('token') === null) {
+            navigate('/login')
+        }
+        else {
+            navigate('/profile')
+        }
+    }
     return (
         <>
             <nav className="navbar navbar-light bg-light ">
@@ -65,7 +75,7 @@ const Navbar = () => {
                     <div className="d-flex align-items-center gap-4">
                         <button className="btn bg-dark text-light" type="submit">Become a Seller</button>
                         <div className="">
-                            <img className="avatar rounded-circle" src={avatar} />
+                            <img className="avatar rounded-circle" src={avatar} onClick={handleAvatarClick} />
                         </div>
                     </div>
                 </div>
