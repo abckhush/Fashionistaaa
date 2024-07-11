@@ -12,6 +12,9 @@ import Footer from './Components/Footer/Footer.jsx';
 import ProductPage from './Components/Home/ProductPage.jsx';
 import VerifyOTP from './Components/Register/VerifyOTP.jsx';
 import Register from './Components/Register/Register.jsx';
+import ContestPage from './Components/Contests/ContestPage.jsx';
+import TermsContest from './Components/Contests/TermsContest.jsx';
+import Submission from './Components/Contests/Submission.jsx';
 
 function App() {
   return (
@@ -29,6 +32,10 @@ function App() {
         <Route path="/verifyOTP" element={<VerifyOTP/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/designInfo" element={<ProductPage />} />
+        <Route path="/contestpage" element={<ContestPage />} />
+        <Route path="/contest-terms" element={<TermsContest />} />
+        <Route path="/submission" element={<Submission />} />
+
     </Routes>
     <Footer/>
     </Router>
