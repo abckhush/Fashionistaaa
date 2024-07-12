@@ -15,6 +15,7 @@ import Register from './Components/Register/Register.jsx';
 import ContestPage from './Components/Contests/ContestPage.jsx';
 import TermsContest from './Components/Contests/TermsContest.jsx';
 import Submission from './Components/Contests/Submission.jsx';
+import ContestGallery from './Components/Contests/ContestGallery.jsx';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/contestpage" element={<ContestPage />} />
         <Route path="/contest-terms" element={<TermsContest />} />
         <Route path="/submission" element={<Submission />} />
+        <Route path="/gallery" element={<ContestGallery />} />
 
     </Routes>
     <Footer/>

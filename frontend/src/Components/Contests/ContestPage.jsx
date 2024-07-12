@@ -7,10 +7,14 @@ const ContestPage = () => {
     const handleClick =()=>{
         navigate('/contest-terms')
     }
+
+    function handleGallery(){
+        navigate('/gallery')
+    }
     return (
         <>
             <div>
-                <img className="" src={contest} style={{ "height": "80vh", "width": "98vw" }} />
+                <img className="" src={contest} style={{ "height": "42vh", "width": "98vw" ,"objectFit":"cover"}} />
             </div>
             <div className="d-flex m-5 text-start">
                 <div className="">
@@ -24,7 +28,7 @@ const ContestPage = () => {
                     <p className="fw-normal">17 July,2024  08:00 p.m. (I.S.T)</p>
                     <hr style={{ "color": "white", "fontWeight": "100" }} />
                     <p className=" fw-bold">20 participants registered</p>
-                    <p className="fw-normal">View Schedule</p>
+                    <p className="fw-normal" style={{"cursor":"pointer"}} onClick={handleGallery}>View Gallery</p>
                 </div>
             </div>
 

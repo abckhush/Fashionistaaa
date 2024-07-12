@@ -10,7 +10,7 @@ const TermsContest = () => {
   return (
     <>
          <div>
-                <img className="" src={contest} style={{ "height": "80vh", "width": "98vw" }} />
+                <img className="" src={contest} style={{ "height": "42vh", "width": "98vw" ,"objectFit":"cover"}} />
         </div>
                 <div className="">
                     <p className="fs-3 my-3 fw-bold">Xnova Contest</p>
