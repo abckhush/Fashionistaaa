@@ -18,6 +18,15 @@ const Navbar = () => {
             navigate('/profile')
         }
     }
+
+    function handleSellerClick() {
+        if (localStorage.getItem('token') === null) {
+            navigate('/register/seller')
+        }
+        else {
+            navigate('/seller')
+        }
+    }
     return (
         <>
             <nav className="navbar navbar-light bg-light ">
@@ -54,7 +63,7 @@ const Navbar = () => {
                                 </li>
                                 <li className="nav-item d-flex align-items-center gap-4 px-3">
                                     <img className="svg" src={savedSvg} />
-                                    <Link className="nav-link active" aria-current="page" to="/">Your saved Designs</Link>
+                                    <Link className="nav-link active" aria-current="page" to="/savedList">Your saved Designs</Link>
                                 </li>
                                 <li className="nav-item d-flex align-items-center gap-4 px-3">
                                     <img className="svg" src={logoutSvg} />
@@ -73,7 +82,7 @@ const Navbar = () => {
 
                     </div>
                     <div className="d-flex align-items-center gap-4">
-                        <button className="btn bg-dark text-light" type="submit">Become a Seller</button>
+                        <button className="btn bg-dark text-light" type="submit" onClick={handleSellerClick}>Become a Seller</button>
                         <div className="">
                             <img className="avatar rounded-circle" src={avatar} onClick={handleAvatarClick} />
                         </div>

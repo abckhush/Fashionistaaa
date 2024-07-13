@@ -3,18 +3,23 @@ import design from '../../assets/image/design.jpeg'
 import avatar from '../../assets/image/avatar.jpg'
 import heart from '../../assets/svg/heart-filled.svg'
 import comment from '../../assets/svg/comment-filled.svg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const DesignCard = ({onClick}) => {
+    const navigate = useNavigate()
+    const username = "XYZ"
+    const handleUser = ()=>{
+        navigate(`/profile/${username}`)
+    }
     return (
         <>
-            <div onClick={onClick} className="card text-white" style={{ "width": "20rem", "padding": "0px", "backgroundColor": "#414651" }}>
-                <img src={design} className="card-img-top" alt="a design" />
+            <div  className="card text-white" style={{ "width": "20rem", "padding": "0px", "backgroundColor": "#414651" }}>
+                <img onClick={onClick} src={design} className="card-img-top" alt="a design" />
                 <div className="card-body">
                     <h5 className="card-title d-flex align-items-center justify-content-between">
                         <div className="d-flex align-items-center gap-2">
-                            <img className='avatar rounded-circle' src={avatar} />
-                            <span className='fw-bold fs-5' style={{"color":"#F4DF70"}}>@XYZ</span>
+                            <img className='pe-auto avatar rounded-circle' src={avatar} />
+                            <span className='fw-bold fs-5 ' onClick={handleUser} style={{"color":"#F4DF70","cursor":"pointer"}}>@XYZ</span>
                         </div>
                         <div className="fs-6 fw-bold">36k followers</div>
                     </h5>

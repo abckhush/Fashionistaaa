@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import dress from '../../assets/image/design.jpeg'
 import avatar from '../../assets/image/avatar.jpg'
 import heart from '../../assets/svg/heart.svg'
@@ -8,16 +8,68 @@ import download from '../../assets/svg/download.svg'
 import flag from '../../assets/svg/flag.svg'
 import success from '../../assets/svg/success.svg'
 import clock from '../../assets/svg/clock.svg'
+import cross from '../../assets/svg/cross.svg'
 import { Link } from 'react-router-dom'
 
 const ProductPage = () => {
+
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
+    const handleDownload = () => {
+        fetch(dress, {
+          method: "GET",
+          headers: {}
+        })
+          .then(response => {
+            response.arrayBuffer().then(function(buffer) {
+              const url = window.URL.createObjectURL(new Blob([buffer]));
+              const link = document.createElement("a");
+              link.href = url;
+              link.setAttribute("download", "image.png"); //or any other extension
+              document.body.appendChild(link);
+              link.click();
+            });
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      };
+
+      const handleLike = () => {
+        handleAlert(true, 'Liked');
+      };
+    
+      const handleAlert = (success, message) => {
+        if (success) {
+          setAlertVisible(true);
+          setAlertMessage(message);
+        } else {
+          alert('Report failed');
+        }
+      };
+    
+      const handleCross = () => {
+        setAlertVisible(false);
+      };
+      
   return (
     <>
+    {alertVisible && (
+        <>
+        <div id="alert" className=" d-flex gap-3 justify-content-center alert alert-success alert-dismissible fade show" role="alert">
+            <div className="" id="message">{alertMessage}</div>
+          <img className="cross-icon" src={cross} onClick={handleCross} style={{ "cursor": "pointer", "zIndex": "2", "width": "2vw" }}/>
+        </div>
+        </>
+      )}
+        
+
      <div className="d-flex align-items-start justify-content-between p-3 gap-5">
         <img className="" src={dress} style={{"width":"40%"}} />
         <div className="text-start" style={{"width":"60%"}} >
             <div className="d-flex align-items-center justify-content-evenly p-3">
-            <div className="hover-gray d-flex align-item-center justify-content-between gap-2  py-2 px-3 rounded border ">
+            <div className="hover-gray d-flex align-item-center justify-content-between gap-2  py-2 px-3 rounded border " onClick={handleLike}>
                 <img className="avatar" style={{"height":"4vh"}} src={heart} />
                 <p className="m-0">Like</p>
             </div>
@@ -29,7 +81,7 @@ const ProductPage = () => {
                 <img className="avatar" style={{"height":"4vh"}} src={save} />
                 <p className="m-0">Save</p>
             </div>
-            <div className="hover-gray d-flex align-item-center justify-content-between gap-2  py-2 px-3 rounded border ">
+            <div onClick={handleDownload} className="hover-gray d-flex align-item-center justify-content-between gap-2  py-2 px-3 rounded border ">
                 <img className="avatar" style={{"height":"4vh"}} src={download} />
                 <p className="m-0">Download</p>
             </div>

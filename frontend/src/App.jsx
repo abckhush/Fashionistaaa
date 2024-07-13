@@ -16,6 +16,8 @@ import ContestPage from './Components/Contests/ContestPage.jsx';
 import TermsContest from './Components/Contests/TermsContest.jsx';
 import Submission from './Components/Contests/Submission.jsx';
 import ContestGallery from './Components/Contests/ContestGallery.jsx';
+import Dashboard from './Components/Dashboard/Dashboard.jsx';
+import SavedList from './Components/SavedList/SavedList.jsx';
 
 function App() {
   return (
@@ -37,7 +39,10 @@ function App() {
         <Route path="/contest-terms" element={<TermsContest />} />
         <Route path="/submission" element={<Submission />} />
         <Route path="/gallery" element={<ContestGallery />} />
-
+        <Route path="/profile" element={<Dashboard />} />
+        <Route path="/register/seller" element={<Signup seller={true} />} />
+        <Route path="/savedList" element={<SavedList/>} />
+        
     </Routes>
     <Footer/>
     </Router>

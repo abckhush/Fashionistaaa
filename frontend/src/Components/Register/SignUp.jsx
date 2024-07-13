@@ -2,33 +2,39 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Signup = () => {
-    const [username, setUsername] = useState('');
+const Signup = (props) => {
+    const seller = props.seller;
+
+    
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const [error, setError] = useState(''); 
     const navigate = useNavigate(); 
 
     const handleSubmit = async (e) => {
         navigate('/verifyOTP')
-        // e.preventDefault();
-        // setError('');
-        // try {
-        //     const res = await axios.post('http://localhost:5000/signup', { username, email, password });
-        //     localStorage.setItem('token', res.data.token);
-        //     navigate('/login');
-        // } catch (err) {
-        //     if (err.response && err.response.data && err.response.data.message) {
-        //         setError(err.response.data.message);
-        //     } else {
-        //         setError('Error signing up');
-        //     }
-        // }
+        e.preventDefault();
+        setError('');
+        try {
+            const res = await axios.post('http://localhost:5000/signup', { email });
+            if (res.data.message === 'User already exists') {
+                navigate('/login');
+                return;
+            }
+            
+            navigate('/login');
+        } catch (err) {
+            if (err.response && err.response.data && err.response.data.message) {
+                setError(err.response.data.message);
+            } else {
+                setError('Error signing up');
+            }
+        }
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2 className="my-5 fw-semibold">Create your account</h2>
+            {seller ? <h2 className="my-5 fw-semibold">Create your seller account</h2>:
+            <h2 className="my-5 fw-semibold">Create your account</h2>}
             {error && <p style={{ color: 'red' }}>{error}</p>}
        
         <p className="fs-4">Enter your email to sign up</p>

@@ -1,0 +1,24 @@
+.post-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  
+  .likes-overlay {
+    position: absolute;
+    top: 0;  /* Changed to cover full image */
+    left: 0;  /* Changed to cover full image */
+    right: 0;  /* Changed to cover full image */
+    bottom: 0;  /* Changed to cover full image */
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .post-container:hover .likes-overlay {
+    opacity: 1;
+  }
