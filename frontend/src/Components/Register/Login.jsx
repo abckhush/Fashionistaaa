@@ -8,14 +8,27 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const host = "http://localhost:5000/api/v1";
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         try {
-            const res = await axios.post('http://localhost:5000/login', { email, password });
-            localStorage.setItem('token', res.data.token);
-            navigate('/');
+            const res = await axios.post(`${host}/user/login`, { email, password });
+            console.log(res)
+            if(res.data.success){
+                alert("User logged in successfully")
+                sessionStorage.setItem('token', res.data.accessToken);
+                navigate('/');
+            }
+            
+            
+            if(!res.data.success) {
+                return setError(res.data.message);
+            }
+
+            
+           
         } catch (err) {
             setError(err.response?.data?.message || 'Error logging in');
         }

@@ -1,9 +1,27 @@
-import React from 'react'
+import React ,{useEffect} from 'react'
 import avatar from '../../assets/image/avatar.jpg'
 import Post from './Post'
+import axios from 'axios'
 
 const Dashboard = () => {
-  
+  const host = "http://localhost:5000/api/v1";
+  const getProfile = async(req,res)=>{
+    try{
+      const response = await axios.get(`${host}/user/profile`,{headers:{Authorization:`Bearer ${sessionStorage.getItem('token')}`}})
+
+      if(response.data.success){
+        console.log(response.data)
+      }
+      else{
+        alert(response.data.message)
+      }
+    }catch(err){
+      alert(err.message)
+    }
+  }
+  useEffect(()=>{
+    getProfile()
+  },[])
   return (
     <div className='' style={{ "backgroundColor": "#D9D9D9" }}>
       <div className="d-flex p-5 justify-content-start gap-5 align-items-center">

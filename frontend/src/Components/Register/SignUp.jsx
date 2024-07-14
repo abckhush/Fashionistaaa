@@ -3,30 +3,33 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Signup = (props) => {
-    const seller = props.seller;
-
-    
+    const seller = props.seller;    
     const [email, setEmail] = useState('');
     const [error, setError] = useState(''); 
     const navigate = useNavigate(); 
+    const host = 'http://localhost:5000/api/v1';
 
     const handleSubmit = async (e) => {
-        navigate('/verifyOTP')
+        
         e.preventDefault();
         setError('');
+        
         try {
-            const res = await axios.post('http://localhost:5000/signup', { email });
-            if (res.data.message === 'User already exists') {
-                navigate('/login');
-                return;
+            const res = await axios.post(`${host}/user/sendotp`, { email });
+            console.log(res);
+            if(res.data.success){
+                sessionStorage.setItem('email', email);
+                navigate("/verifyOTP")
             }
+            else{
+                setError(res.data.message);
+            }          
             
-            navigate('/login');
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
                 setError(err.response.data.message);
             } else {
-                setError('Error signing up');
+                setError('Error sending OTP');
             }
         }
     };

@@ -11,11 +11,11 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     function handleAvatarClick() {
-        if (localStorage.getItem('token') === null) {
-            navigate('/login')
+        if (sessionStorage.getItem('token') !== null) {
+            navigate('/profile')
         }
         else {
-            navigate('/profile')
+            navigate('/login')
         }
     }
 
