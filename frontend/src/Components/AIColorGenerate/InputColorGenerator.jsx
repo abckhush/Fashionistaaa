@@ -12,11 +12,12 @@ import wedding from '../../assets/image/wedding.png';
 import formal from '../../assets/image/formal.png';
 import casual from '../../assets/image/casual.png';
 import other from '../../assets/image/other.png';
-import OPENAI from 'openai';
+import axios from 'axios';
+import loadinggif from '../../assets/loading.gif';
 
 const InputColorGenerator = () => {
     const navigate = useNavigate();
-
+    const [loading, setLoading] = useState(false);
     const [credentials, setCredentials] = useState({
         skintone: '',
         haircolor: '',
@@ -52,28 +53,40 @@ const InputColorGenerator = () => {
         setCredentials({ ...credentials, occasion: occasion });
     };
 
+    const host = 'http://localhost:5000/api/v1';
     const generateDressColorPrompt = (credentials) => {
-      return `
-          Generate a dress color suggestion based on the following user preferences:
-          - Skin tone: ${credentials.skintone}
-          - Hair color: ${credentials.haircolor}
-          - Style preference: ${credentials.style}
-          - Occasion: ${credentials.occasion}
-          - Height: ${credentials.height} cm
-          - Weight: ${credentials.weight} kg
-      `;
+      return `Generate a dress color and outift suggestion based on the following user preferences:- Skin tone: ${credentials.skintone}- Hair color: ${credentials.haircolor} - Style preference: ${credentials.style}- Occasion: ${credentials.occasion} - Height: ${credentials.height} cm - Weight: ${credentials.weight} kg.Generate the json object in this format only so that it can be parsed into json: {color:,outfit :,"hexcode"} remove json word also. `;
   };
-  
+
 
     const handleClick = async(e) => {
         e.preventDefault();
+        setLoading(true);
         const prompt =generateDressColorPrompt(credentials);
-       
-        navigate('/output');
-
+        const response = await axios.post(`${host}/color/generatecolor`,{prompt});
+        if(response.data.success){
+            console.log(response.data.data);
+            const output = JSON.parse(response.data.data);
+            console.log(output)
+            if(output.color && output.outfit){
+                setLoading(false);
+                navigate('/output', { state: { color: output.color, outfit: output.outfit , hexcode : output.hexcode} });
+            }
+            else{
+                setLoading(false);
+                alert("Color generation failed");
+            }
+        }
+        else{
+            setLoading(false);
+            alert(response.data.error);
+        }
+        
     };
 
     return (
+        <>
+        {loading && <><img src={loadinggif} alt="loading" style={{"width":"30px","height":"29px","position":"absolute","top":"17%","left":"50%","transform":"translate(-50%,-50%)"}}/></>}
         <div className='my-5 text-start w-75' style={{ margin: '52px auto' }}>
             <h2 style={{ fontWeight: '600', fontSize: '30px' }}>Tell us about your preferences</h2>
             <form onSubmit={handleClick} className=''>
@@ -168,6 +181,7 @@ const InputColorGenerator = () => {
                 </div>
             </form>
         </div>
+        </>
     );
 };
 

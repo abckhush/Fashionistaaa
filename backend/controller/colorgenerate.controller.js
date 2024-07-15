@@ -1,20 +1,20 @@
-const OpenAI =require('openai');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const openai = new OpenAI(process.env.OPENAI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
 
 const generateColor = async (req, res) => {
   const { prompt } = req.body;
   try {
-    const response = await openai.chat.completions.create({
-        messages: [{ role: "system", content: prompt }],
-        model: "gpt-3.5-turbo",
-      });
-
-    const data = completion.choices[0];
-    
-    res.status(200).json({
+  const result = await model.generateContent(prompt);
+  const response = await result.response;
+  const text = response.text();
+  console.log(text);
+   
+    return res.status(200).json({
       success: true,
-      data: data,
+      data: text,
     });
   } catch (error) {
     if (error.response) {
@@ -24,9 +24,9 @@ const generateColor = async (req, res) => {
       console.log(error.message);
     }
 
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
-      error: 'The image could not be generated',
+      error: 'Color generation failed',
     });
   }
 };
