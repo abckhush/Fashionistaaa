@@ -110,3 +110,9 @@ input:focus-visible {
   color: white;
   cursor: pointer;
 }
+
+.selected {
+  border: 2px solid #000; /* or any other highlight style */
+  padding: 2px;
+  border-radius: 4px;
+}

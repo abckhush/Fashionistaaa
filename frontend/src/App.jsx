@@ -18,6 +18,7 @@ import Submission from './Components/Contests/Submission.jsx';
 import ContestGallery from './Components/Contests/ContestGallery.jsx';
 import Dashboard from './Components/Dashboard/Dashboard.jsx';
 import SavedList from './Components/SavedList/SavedList.jsx';
+import ColorOutput from './Components/AIColorGenerate/ColorOutput.jsx';
 
 function App() {
   return (
@@ -42,7 +43,8 @@ function App() {
         <Route path="/profile" element={<Dashboard />} />
         <Route path="/register/seller" element={<Signup seller={true} />} />
         <Route path="/savedList" element={<SavedList/>} />
-        
+        <Route path="/output" element={<ColorOutput/>} />
+
     </Routes>
     <Footer/>
     </Router>
