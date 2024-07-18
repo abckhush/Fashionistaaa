@@ -5,7 +5,12 @@ const ColorGenerateHome = () => {
     const navigate = useNavigate()
 
     const handleClick = () =>{
+      if(sessionStorage.getItem('token')!==null){
         navigate('/inputColorGenerate')
+      }
+      else{
+        navigate('/login')
+      }
     }
 
   return (
