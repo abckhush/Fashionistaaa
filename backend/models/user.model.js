@@ -29,7 +29,6 @@ var userSchema = new mongoose.Schema({
     role:{
         type:String,
     },
-    savedImage: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
     accessToken: {
       type: String,
     },
@@ -39,6 +38,14 @@ var userSchema = new mongoose.Schema({
     additionalDetails:{
       type:mongoose.Schema.Types.ObjectId,
       ref:'Profile'
+    },
+    savedDesigns:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'Design'
+    },
+    uploadedDesigns:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'Design'
     },
     passwordChangedAt: Date,
     passwordResetToken: String,

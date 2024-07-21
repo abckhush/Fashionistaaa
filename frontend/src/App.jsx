@@ -19,6 +19,8 @@ import ContestGallery from './Components/Contests/ContestGallery.jsx';
 import Dashboard from './Components/Dashboard/Dashboard.jsx';
 import SavedList from './Components/SavedList/SavedList.jsx';
 import ColorOutput from './Components/AIColorGenerate/ColorOutput.jsx';
+import ResetPassword from './Components/Register/ResetPassword.jsx';
+import NewPass from './Components/Register/NewPassword.jsx';
 
 function App() {
   return (
@@ -44,6 +46,8 @@ function App() {
         <Route path="/register/seller" element={<Signup seller={true} />} />
         <Route path="/savedList" element={<SavedList/>} />
         <Route path="/output" element={<ColorOutput/>} />
+        <Route path="/resetPassword" element={<ResetPassword/>} />
+        <Route path="/resetPassword/:token" element={<NewPass/>} />
 
     </Routes>
     <Footer/>

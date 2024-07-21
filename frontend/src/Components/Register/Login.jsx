@@ -49,7 +49,7 @@ const Login = () => {
                     <input type="password" id="inputPassword6" style={{"backgroundColor":"#F0EBEB","padding":"12px 23px","width":"45%"}} class=" form-control m-auto fs-6" aria-describedby="passwordHelpInline" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Enter your password" />
                     </div>
                     <div style={{"margin":"auto","text-align": "right","width":"37%"}}>
-                    <Link to='/forgotpassword' className="text-decoration-underline">Forgot Password?</Link>
+                    <Link to='/resetPassword' className="text-decoration-underline">Forgot Password?</Link>
                     </div>
         
 
