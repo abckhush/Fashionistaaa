@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const Profile = require('../models/profile.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mailSender = require('../utils/mailSender')
@@ -139,8 +140,18 @@ exports.signUp = async(req,res)=>{
           password: secPass,
           role: accountType
         })
+
+       
         
         user.save();
+
+        const profileDetails = await Profile.create({
+            user:user._id,
+            gender: null,
+            dateOfBirth: null,
+            avatar:"",
+            location:"",
+          })
   
         return res.status(201).json({
           success:true,
@@ -237,9 +248,53 @@ exports.userProfile = async(req,res)=>{
     }
 }
 
-exports.forgotPassword = async(req,res)=>{
+exports.getSavedDesigns = async(req,res)=>{
     try {
+        const {user_id} = req.user;
+        const user = await User.findById(user_id).populate('savedDesigns');
         
+        if(!user){
+            return res.status(400).json({
+                success:false,
+                message:"User not found"
+            })
+        }
+
+        return res.status(200).json({
+            success:true,
+            savedDesigns:user.savedDesigns
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:error.message
+        })
+    }
+}
+
+exports.deleteAccount = async(req,res)=>{
+    try {
+        const {user_id} = req.user;
+        if(!user_id){
+            return res.status(400).json({
+                success:false,
+                message:"User id not found"
+            })
+        }
+
+        const user = await User.findByIdAndDelete(user_id);
+        if(!user){
+            return res.status(400).json({
+                success:false,
+                message:"User not found"
+            })
+        }
+
+        return res.status(200).json({
+            success:true,
+            message:"User deleted successfully"
+        })
         
     } catch (error) {
         return res.status(500).json({
