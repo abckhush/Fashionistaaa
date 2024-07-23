@@ -39,12 +39,27 @@ const Dashboard = () => {
     setClick("settings")
   }
 
-  const handleFollower =()=>{
+  const handleDelete = async() =>{
+    try {
+      const response = await axios.delete(`${host}/user/deleteAccount`, { headers
+      : { Authorization: `Bearer ${sessionStorage.getItem('token')}` } })
 
+      if (response.data.success) {
+        alert(response.data.message)
+        sessionStorage.removeItem('token')
+        window.location.href = "/login"
+      }
+      else {
+        alert(response.data.message)
+      }
+    } catch (error) {
+      alert(error.message)
+    }
   }
 
-  const handleFollowing =()=>{
-    
+  function handleLogout(){
+    sessionStorage.removeItem('token')
+    window.location.href = "/login"
   }
 
   
@@ -190,8 +205,30 @@ const Dashboard = () => {
         <p className="py-1 px-3 fs-5" style={{"border":"1px solid","cursor":"pointer","borderRadius":"5px"}}>My Contests</p>
         <p className="py-1 px-3 fs-5" style={{"border":"1px solid","cursor":"pointer","borderRadius":"5px"}}>Change Avatar</p>
         <p className="py-1 px-3 fs-5" style={{"border":"1px solid","cursor":"pointer","borderRadius":"5px"}}>Notifications</p>
-        <p className="py-1 px-3 fs-5" style={{"border":"1px solid","cursor":"pointer","borderRadius":"5px"}}>Logout</p>
-        <p className="py-1 px-3 fs-5" style={{"border":"1px solid","cursor":"pointer","borderRadius":"5px"}}>Delete Account</p>
+        <p className="py-1 px-3 fs-5" style={{"border":"1px solid","cursor":"pointer","borderRadius":"5px"}} onClick={handleLogout}>Logout</p>
+        <p className="py-1 px-3 fs-5" style={{"border":"1px solid","cursor":"pointer","borderRadius":"5px"}} type="button" data-bs-toggle="modal" data-bs-target="#exampleModal3">Delete Account</p>
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel3">Are you sure you want to delete your account?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <p className="fs-5 fw-light" style={{"cursor":"pointer"}} >Note that this process is irreversible and will lead to deletion of all your activity.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary" onClick={handleDelete}>Yes</button>
+      </div>
+      
+
+
+     
+    </div>
+  </div>
+</div>
+        
       </div>
       <div className="text-start">
         <p className="fw-bold fs-4">FAQs</p>
