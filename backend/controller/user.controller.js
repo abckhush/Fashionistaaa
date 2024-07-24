@@ -168,11 +168,11 @@ exports.signUp = async(req,res)=>{
   
   }
 
-  exports.login = async (req,res)=>{
+exports.login = async (req,res)=>{
     try{
         const {email,password} = req.body;
         if(!email||!password){
-          res.status(400).json({
+          return res.status(400).json({
               success:false,
               message:'Fill details carefully'
           })
@@ -181,7 +181,7 @@ exports.signUp = async(req,res)=>{
         var user = await User.findOne({email:email}).populate("additionalDetails");
   
         if(!user){
-          res.status(400).json({
+          return res.status(400).json({
               success:false,
               message:"User Not Found"
           })
@@ -250,7 +250,7 @@ exports.userProfile = async(req,res)=>{
 
 exports.getSavedDesigns = async(req,res)=>{
     try {
-        const {user_id} = req.user;
+        const user_id = req.user.id;
         const user = await User.findById(user_id).populate('savedDesigns');
         
         if(!user){
@@ -275,7 +275,8 @@ exports.getSavedDesigns = async(req,res)=>{
 
 exports.deleteAccount = async(req,res)=>{
     try {
-        const {user_id} = req.user;
+        const user_id = req.user.id;
+        console.log(user_id)
         if(!user_id){
             return res.status(400).json({
                 success:false,

@@ -3,7 +3,7 @@ const User = require("../models/user.model")
 
 exports.getProfile = async(req,res)=>{
     try {
-        const {user_id} = req.user;
+        const user_id = req.user.id;
 
         if(!user_id){
             return res.status(400).json({
@@ -37,7 +37,7 @@ exports.getProfile = async(req,res)=>{
 
 exports.editProfile = async(req,res)=>{
     try {
-        const {user_id} = req.user;
+        const user_id = req.user.id;
         if(!user_id){
             return res.status(400).json({
                 success:false,
@@ -85,7 +85,7 @@ exports.editProfile = async(req,res)=>{
 
 exports.changeAvatar = async(req,res)=>{
     try {
-        const {user_id} = req.user;
+        const user_id = req.user.id;
         if(!user_id){
             return res.status(400).json({
                 success:false,

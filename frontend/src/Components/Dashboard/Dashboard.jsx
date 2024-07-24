@@ -19,7 +19,7 @@ const Dashboard = () => {
         alert(response.data.message)
       }
     } catch (err) {
-      alert(err.message)
+      alert(err.response?.data?.message || 'Error fetching profile details')
     }
   }
   useEffect(() => {
@@ -53,7 +53,7 @@ const Dashboard = () => {
         alert(response.data.message)
       }
     } catch (error) {
-      alert(error.message)
+      alert(error.response?.data?.message || 'Error fetching profile details')
     }
   }
 
