@@ -6,6 +6,7 @@ const cors = require('cors');
 const authRouter = require('./router/user.router.js');
 const colorRouter = require('./router/colorgenerate.router.js');
 const imageGenerateRouter = require('./router/imagegenerate.router.js')
+const designRouter = require('./router/design.router.js');
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(cors());
 app.use(`${api}/user`,authRouter);
 app.use(`${api}/color`,colorRouter);
 app.use(`${api}/image`,imageGenerateRouter);
+app.use(`${api}/design`,designRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
