@@ -45,14 +45,14 @@ exports.isUser = async(req,res,next)=>{
   }
 }
 
-exports.isSeller = async(req,res,next)=>{
+exports.isOrganiser = async(req,res,next)=>{
     try {
-        if(req.user.role === 'seller'){
+        if(req.user.role === 'organiser'){
             next();
         }else{
             res.status(400).json({
                 success:false,
-                message:'Not Authorized, Only Seller Can Access'
+                message:'Not Authorized, Only organiser Can Access'
             })
         }
     } catch (error) {

@@ -1,4 +1,4 @@
-const file = require("../models/File");
+const file = require("../models/file.model");
 const cloudinary = require("cloudinary").v2;
 
 exports.localfileUpload = async (req, res) => {
