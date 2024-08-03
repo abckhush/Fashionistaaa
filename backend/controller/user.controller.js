@@ -100,7 +100,7 @@ exports.signUp = async(req,res)=>{
         if(user_email){
           return res.status(400).json({
               success:false,
-              message:'Email ALready exists'
+              message:'Email Already exists'
           })
         }
   
@@ -152,6 +152,9 @@ exports.signUp = async(req,res)=>{
             avatar:"",
             location:"",
           })
+            profileDetails.save();
+
+            user.additionalDetails = profileDetails._id;
   
         return res.status(201).json({
           success:true,

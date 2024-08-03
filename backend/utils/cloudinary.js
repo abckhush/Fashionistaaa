@@ -9,35 +9,119 @@ exports.localfileUpload = async (req, res) => {
 
     file.mv(path, (err) => {
       if (err) {
-        res.status(500).json({
-          success:false,
-          message:'Error in uploading file'
-      })
+       return res.status(500).json({
+        success : false,
+        message : "File Upload Failed"
+
+      });
       }
     });
 
     return res.status(200).json({
-      success:true,
-      message:'File Uploaded Successfully'
-    });
+      success: true,
+      message: "File Uploaded Successfully",
+      data: {
+        name: file.name,
+        mimetype: file.mimetype,
+        size: file.size,
+      },
+    })
   } catch (error) {
-    res.status(400).json({
-      success:false,
-      message:error.message
-  })
+    throw new ApiError(500, error.message);
   }
 }
 
+// function isFileTypeSupported(type,supportedTypes){
+//   return supportedTypes.includes(type);
+// }
 
-exports.uploadFileToCloudinary = async (file, folder, height, quality) => {
+exports.uploadFileToCloudinary=async(file,folder,quality)=>{
+  console.log(file)
     const options = {folder};
-    if(height) {
-        options.height = height;
-    }
-    if(quality) {
-        options.quality = quality;
-    }
-    options.resource_type = "auto";
-
-    return await cloudinary.uploader.upload(file.tempFilePath, options);
+    options.resource_type = 'auto';
+    if(quality) options.quality = quality;
+    console.log(file.tempFilePath)
+    return await cloudinary.uploader.upload(file.tempFilePath,options);
 }
+
+// exports.imageUpload = async (req, res) => {
+//     try {
+//       const {email} = req.body;
+
+//       const file = req.files.file;
+
+//       //now validate 
+
+//       const supportedTypes = ['png','jpg','jpeg','gif','webp',];
+//       const filetype = file.name.split('.')[1];
+
+//       if(!isFileTypeSupported(filetype,supportedTypes)){
+//         throw new ApiError(400,'File type not supported');
+//       }
+      
+//       const response = await uploadFileToCloudinary(file,'images');
+
+//       const newFile = await file.create({
+//         name,
+//         email,
+//         path:response.secure_url,
+//       })
+
+//       Product.updateOne({email},{$set:{imgsrc:newFile._id}},{new:true});
+//     } catch (error) {
+//       throw new ApiError(500, error.message);
+//     }
+// }
+
+// exports.videoUpload = async (req, res) => {
+//   try {
+//     const { email} = req.body;
+
+//     const file = req.files.videoFile;
+
+//     const supportedTypes = ['mp4','mkv','avi','webm'];
+
+//     const filetype = file.name.split('.')[1];
+
+//       if(!isFileTypeSupported(filetype,supportedTypes)){
+//         throw new ApiError(400,'File type not supported');
+//       }
+      
+//       const response = await uploadFileToCloudinary(file,'videos');
+
+//       const newFile = await file.create({
+//         name,
+//         email,
+//         path:response.secure_url,
+//       })
+
+//   } catch (error) {
+//     throw new ApiError(400, error.message);
+//   }
+// }
+
+// exports.imageSizeReducer = async (req, res) => {
+//   try {
+//     const { email} = req.body;
+
+//     const file = req.files.file;
+
+//     const supportedTypes = ['png','jpg','jpeg','gif','webp',];
+//     const filetype = file.name.split('.')[1];
+      
+//         if(!isFileTypeSupported(filetype,supportedTypes)){
+//           throw new ApiError(400,'File type not supported');
+//         }
+        
+//         const response = await uploadFileToCloudinary(file,'images',30);
+  
+//         const newFile = await file.create({
+//           name,
+//           email,
+//           path:response.secure_url,
+//         })
+
+//   } catch (error) {
+//     throw new ApiError(400,error.message)
+//   }
+// }

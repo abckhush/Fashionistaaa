@@ -1,7 +1,8 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import DesignCard from './DesignCard'
-import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { set } from 'mongoose'
 
 const Home = () => {
     const navigate = useNavigate()
@@ -24,6 +25,52 @@ const Home = () => {
         console.log('clicked')
         navigate('/designInfo')
     }
+    const host = 'http://localhost:5000/api/v1'
+
+    const [designs,setDesigns] = useState([])
+
+    
+
+    const getTrendingDesigns = async()=>{
+
+    }
+
+    const getRecentDesigns = async()=>{
+
+    }
+
+    const getYourDesigns = async()=>{
+
+    }
+
+    const getAllDesigns = async() =>{
+      try {
+        const response = await axios.get(`${host}/design/getAllDesigns`)
+        console.log(response)
+
+        if(response.data.success){
+         setDesigns(response.data.designs)
+        }
+
+      } catch (error) {
+        
+      }
+    }
+
+    if(current === 'artists you follow'){
+      useEffect(()=>{
+        getAllDesigns()
+      },[])
+    }
+    if(current === '#trending now'){
+      getTrendingDesigns()
+    }
+    if(current === 'recent design posted'){
+      getRecentDesigns()
+    }
+    if(current === 'see your posts'){
+      getYourDesigns()
+    }
   return (
     <>
     <div className="d-flex justify-content-evenly my-4">
@@ -34,12 +81,9 @@ const Home = () => {
     </div>
 
       <div className="d-flex flex-wrap align-items-center justify-content-evenly gap-5 my-5">
-      <DesignCard onClick={handleClick}/>
-      <DesignCard/>
-      <DesignCard/>
-      <DesignCard/>
-      <DesignCard/>
-      <DesignCard/>
+        {designs.map((design,index)=>{
+          return <DesignCard key={index} design={design} onClick={handleClick}/>
+        })}
       </div>
 
       
