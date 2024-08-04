@@ -13,14 +13,14 @@ const designSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    likes:{
+    likes:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Like',
-    },
-    comments:{
+    }],
+    comments:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Comment',
-    },
+    }],
     createdBy:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',

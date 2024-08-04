@@ -49,7 +49,7 @@ const Home = () => {
         console.log(response)
 
         if(response.data.success){
-         setDesigns(response.data.designs)
+         setDesigns(response.data.data)
         }
 
       } catch (error) {

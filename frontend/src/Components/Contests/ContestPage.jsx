@@ -1,33 +1,58 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import contest from '../../assets/image/contest.jpg'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const ContestPage = () => {
+    
+    const id = window.location.pathname.split('/')[2]
+
+    const [data,setData] = useState([])
+
     const navigate = useNavigate();
     const handleClick =()=>{
-        navigate('/contest-terms')
+        navigate(`/contest-terms/${id}`)
     }
 
     function handleGallery(){
         navigate('/gallery')
     }
+
+    const host = 'http://localhost:5000/api/v1'
+
+    const getContestInfo = async () => {
+        try {
+            const response = await axios.get(`${host}/contest/getContestById/${id}`)
+
+            if (response.data.data) {
+                setData(response.data.data)
+            }
+        } catch (error) {
+            alert(error.message)
+        }
+    } 
+
+    useEffect(() => {
+        getContestInfo()
+    }, [])
+    
     return (
         <>
             <div>
-                <img className="" src={contest} style={{ "height": "42vh", "width": "98vw" ,"objectFit":"cover"}} />
+                <img className="" src={data.image} style={{ "height": "42vh", "width": "98vw" ,"objectFit":"cover"}} />
             </div>
-            <div className="d-flex m-5 text-start">
-                <div className="">
-                    <p className="fs-3 fw-bold">Xnova Contest</p>
-                    <p className="my-5 fw-semibold">Unleash Your Creativity with AI. Whether you’re a fashion enthusiast, a designer, or simply someone who loves to experiment with style, this is your chance to showcase your unique creations.</p>
+            <div className="d-flex m-5 text-start" style={{"gap":"76px"}}>
+                <div className="" style={{"width":"102vw"}}>
+                    <p className="fs-3 fw-bold">{data.title}</p>
+                    <p className="my-5 fw-semibold">{data.description}</p>
                     <button className="" style={{ "backgroundColor": "#4BF370", "color": "black" }} onClick={handleClick}>Register Now</button>
                 </div>
                 <div className="px-3 py-4 w-50" style={{ "backgroundColor": "#BFBABA", "borderRadius": "3%" }}>
-                    <span className="py-2 px-3 fw-bold" style={{ "backgroundColor": "#0400CA", "color": "#12E70E", "borderRadius": "12px" }}>2 days to deadline</span>
+                    <span className="py-2 px-3 fw-bold" style={{ "backgroundColor": "#0400CA", "color": "#12E70E", "borderRadius": "12px" }}>{data.daysLeft} days to deadline</span>
                     <p className="my-3 fw-bold">Deadline</p>
-                    <p className="fw-normal">17 July,2024  08:00 p.m. (I.S.T)</p>
+                    <p className="fw-normal">{data.deadline}</p>
                     <hr style={{ "color": "white", "fontWeight": "100" }} />
-                    <p className=" fw-bold">20 participants registered</p>
+                    <p className=" fw-bold">{data.participants} participants registered</p>
                     <p className="fw-normal" style={{"cursor":"pointer"}} onClick={handleGallery}>View Gallery</p>
                 </div>
             </div>
@@ -63,7 +88,7 @@ const ContestPage = () => {
 
             <p className="text-start fw-bold fs-4 m-5">Prizes</p>
             <div className="text-start m-5">
-                <p className="fw-bolder " style={{ "color": "#403D3D" }}>1st -  $45,000
+                <p className="fw-bolder " style={{ "color": "#403D3D" }}>1st -  ${data.prize}
                 </p>
                 <p className="fw-bolder " style={{ "color": "#403D3D" }}>2nd - $25,000
                 </p>

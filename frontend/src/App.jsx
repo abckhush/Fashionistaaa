@@ -38,8 +38,8 @@ function App() {
         <Route path="/verifyOTP" element={<VerifyOTP/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/designInfo" element={<ProductPage />} />
-        <Route path="/contestpage" element={<ContestPage />} />
-        <Route path="/contest-terms" element={<TermsContest />} />
+        <Route path="/contestpage/:id" element={<ContestPage />} />
+        <Route path="/contest-terms/:id" element={<TermsContest />} />
         <Route path="/submission" element={<Submission />} />
         <Route path="/gallery" element={<ContestGallery />} />
         <Route path="/profile" element={<Dashboard />} />

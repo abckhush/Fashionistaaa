@@ -1,17 +1,27 @@
 const Contest = require('../models/contest.model')
-const Organizer = require('../models/organiser.model')
+const { create } = require('../models/file.model')
 const { uploadFileToCloudinary } = require('../utils/cloudinary')
+const moment = require('moment')
 
 exports.createContest = async(req,res) => {
     try {
-        const {name,description,deadline,tags} = req.body
-        const createdBy = req.organizer.id
+        const {name,description,deadline,tags,prize} = req.body
+        const createdBy = req.user._id
 
-        if(!name || !description || !deadline || !tags || !image){
+        if(!name || !description || !deadline || !tags || !prize ){
             return res.status(400).json({
                 success: false,
                 message: 'All fields are required'
             })
+        }
+        
+        const parsedDeadline = moment(deadline, 'DD MMMM, YYYY hh:mm A').toDate();
+
+        if (isNaN(parsedDeadline)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid date format"
+            });
         }
 
         const imgsrc = req.files.imgsrc;
@@ -20,32 +30,35 @@ exports.createContest = async(req,res) => {
         const imgsrcType = imgsrc.name.split('.')[1];
 
         if (!supportedTypes.includes(imgsrcType)) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: "File type not supported"
             })
 
         }
 
+        const parsedTags = tags.split(' ').map(tag => tag.replace(/^#/, ''));
+
+        const parsedPrize = parseFloat(prize.replace(/,/g, ''));
+        if (isNaN(parsedPrize)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid prize format"
+            });
+        }
+
+
 
         const imgsrcresponse = await uploadFileToCloudinary(imgsrc, process.env.CLOUDINARY_FOLDER);
-
-      
-        const organiser = Organizer.findById(createdBy)
-        if(!organiser){
-            return res.status(404).json({
-                success: false,
-                message: 'You are not authorized to create a contest'
-            })
-        }
 
         const contest = new Contest({
             name,
             description,
             image:imgsrcresponse.secure_url,
             createdBy,
-            deadline,
-            tags,
+            deadline:parsedDeadline,
+            tags:parsedTags,
+            prize:parsedPrize
         })
 
         await contest.save()
@@ -66,6 +79,16 @@ exports.createContest = async(req,res) => {
 exports.liveContests = async(req,res)=>{
     try {
         const contests = await Contest.find({deadline:{$gte:Date.now()}})
+
+        const data = contests.map(contest=>{
+            return {
+                id:contest._id,
+                title:contest.name,
+                image:contest.image,
+                deadline:contest.deadline,
+                participants:contest.participants.length                
+            }
+        })
         if(!contests){
             return res.status(200).json({
                 success: false,
@@ -74,7 +97,7 @@ exports.liveContests = async(req,res)=>{
         }
         return res.status(200).json({
             success: true,
-            contests
+            data
         })
         
     } catch (error) {
@@ -96,9 +119,19 @@ exports.pastContests = async(req,res)=>{
             })
         }
 
+        const data = contests.map(contest=>{
+            return {
+                id:contest._id,
+                title:contest.name,
+                image:contest.image,
+                deadline:contest.deadline,
+                participants:contest.participants.length                
+            }
+        })
+    
         return res.status(200).json({
             success: true,
-            contests
+            data
         })
 
     } catch (error) {
@@ -114,6 +147,21 @@ exports.getContestById = async(req,res)=>{
     try {
         const contest_id = req.params.id
         const contest = await Contest.findById(contest_id)
+
+        const daysLeft = moment(contest.deadline).diff(Date.now(), 'days');
+
+        const data = {
+            id:contest._id,
+                title:contest.name,
+                description:contest.description,
+                image:contest.image,
+                deadline:contest.deadline,
+                prize:contest.prize,
+                participants:contest.participants.length,
+                daysLeft,
+                createdBy:contest.createdBy,
+                tags:contest.tags}
+       
         if(!contest){
             return res.status(404).json({
                 success: false,
@@ -123,7 +171,7 @@ exports.getContestById = async(req,res)=>{
 
         return res.status(200).json({
             success: true,
-            contest
+            data
         })
         
     } catch (error) {

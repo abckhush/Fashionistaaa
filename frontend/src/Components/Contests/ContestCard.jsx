@@ -6,28 +6,35 @@ import { useNavigate } from 'react-router-dom'
 
 const ContestCard = (props) => {
     const {ended} = props
+    const title = props.title
+    const deadline = props.deadline
+    const id = props.id
+    console.log(id)
+    const registered = props.registered
+    const image = props.image
+    console.log(title)
     const navigate = useNavigate();
 
     const handleRegister =() =>{
-        navigate('/contestpage')
+        navigate(`/contestpage/${id}`)
     }
   return (
     <>
-      <div class="card" style={{"width": "18rem"}}>
-  <img src={contest} class="card-img-top" alt="..."/>
+      <div class="card" style={{"width": "33rem"}}>
+  <img src={image} class="card-img-top" alt="..."/>
   <div class="card-body">
     <p class="card-text d-flex justify-content-between">
-       <p className="fw-semibold">Elite Runway Contest</p>
+       <p className="fw-semibold">{title}</p>
          {ended ? <p className="fw-semibold" style={{"color":"red"}}>Ended</p> :
        <p className="fw-semibold" style={{"color":"green"}}>Live</p>}
     </p>
     <p className="text-start">
         <img src={clock} alt="clock" style={{"width":"20px"}}/>
-        <span> 17 July,2024  08:00 p.m. (I.S.T)</span>
+        <span>{deadline}</span>
     </p>
     <p className="text-start">
         <img src={users} alt="users" style={{"width":"20px"}}/>
-        <span> 20 registered</span>
+        <span> {registered} registered</span>
     </p>
     {ended ? <button type="submit" class="btn my-2" style={{"background":"black","color":"white","padding":"11px 19px","fontWeight":"500"}} onClick={handleRegister}>See Winners</button> :
     <button type="submit" class="btn my-2" style={{"background":"black","color":"white","padding":"11px 19px","fontWeight":"500"}} onClick={handleRegister}>Register Now</button>

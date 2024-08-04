@@ -3,6 +3,8 @@ const User = require('../models/user.model')
 const LikeModel = require('../models/like.model')
 const CommentModel = require('../models/comment.model')
 const { uploadFileToCloudinary } = require('../utils/cloudinary')
+const likeModel = require('../models/like.model')
+const commentModel = require('../models/comment.model')
 
 
 exports.addDesign = async(req, res) => {
@@ -23,7 +25,7 @@ exports.addDesign = async(req, res) => {
         const imgsrcType = imgsrc.name.split('.')[1];
 
         if (!supportedTypes.includes(imgsrcType)) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: "File type not supported"
             })
@@ -45,7 +47,7 @@ exports.addDesign = async(req, res) => {
             description,
             tags,
             image: imgsrcresponse.secure_url,
-            createdBy
+            createdBy,
         });
 
         return res.status(200).json({
@@ -86,7 +88,31 @@ exports.getRecentDesigns = async(req,res)=>{
 
 exports.getAllDesigns = async(req,res)=>{
     try {
-        const designs = await designModel.find()
+        const designs = await designModel.find().populate('createdBy').populate('likes').populate('comments').exec();
+
+        if(designs.likes){
+            likes = designs.likes.length
+        }else{
+            likes = 0;
+        }
+
+        if(designs.comments){
+            comments = designs.comments.length
+        }else{
+            comments = 0;
+        }
+
+
+        const data = designs.map(design=>{
+            return {
+                id:design._id,
+                title:design.title,
+                image:design.image,
+                createdBy:design.createdBy.username,
+                likes:likes,
+                comments:comments
+            }
+        })
         console.log(designs)
         if(!designs){
             return res.status(400).json({
@@ -97,7 +123,7 @@ exports.getAllDesigns = async(req,res)=>{
 
         return res.status(200).json({
             success:true,
-            designs
+            data
         })
 
     } catch (error) {
@@ -129,13 +155,19 @@ exports.addLike = async(req,res)=>{
             })
         }
 
-        design.likes.push(user_id);
-        design.save();
+        if (!design.likes) {
+            design.likes = []; // Ensure likes array is initialized
+        }
 
         const like = await LikeModel.create({
             user_id,
             post_id
         })
+
+        design.likes.push(like._id);
+        await design.save();
+
+       
 
         return res.status(200).json({
             success:true,
@@ -345,5 +377,30 @@ exports.getLikes = async(req,res)=>{
             success:false,
             message:error.message
         })
+    }
+}
+
+exports.getDesignDetails = async(req,res)=>{
+    try {
+        const post_id = req.body.postId
+        const design = designModel.findById(post_id);
+        if(!design){
+            return res.status(400).json({
+                success:false,
+                message:"Post not found"
+            })
+        }
+
+        return res.status(200).json({
+            success:true,
+            design
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:error.message
+        })
+        
     }
 }

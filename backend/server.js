@@ -7,6 +7,7 @@ const authRouter = require('./router/user.router.js');
 const colorRouter = require('./router/colorgenerate.router.js');
 const imageGenerateRouter = require('./router/imagegenerate.router.js')
 const designRouter = require('./router/design.router.js');
+const contestRouter = require('./router/contest.router.js')
 const { cloudinaryConnect } = require('./config/cloudinary.js')
 const fileupload = require('express-fileupload')
 
@@ -28,6 +29,7 @@ app.use(`${api}/user`,authRouter);
 app.use(`${api}/color`,colorRouter);
 app.use(`${api}/image`,imageGenerateRouter);
 app.use(`${api}/design`,designRouter);
+app.use(`${api}/contest`,contestRouter);
 app.use(fileupload({
     useTempFiles:true
 }));

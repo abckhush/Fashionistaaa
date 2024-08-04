@@ -20,15 +20,15 @@ const DesignCard = ({onClick,design}) => {
                     <h5 className="card-title d-flex align-items-center justify-content-between">
                         <div className="d-flex align-items-center gap-2">
                             <img className='pe-auto avatar rounded-circle' src={avatar} />
-                            <span className='fw-bold fs-5 ' onClick={handleUser} style={{"color":"#F4DF70","cursor":"pointer"}}>@XYZ</span>
+                            <span className='fw-bold fs-5 ' onClick={handleUser} style={{"color":"#F4DF70","cursor":"pointer"}}>{design.createdBy}</span>
                         </div>
-                        <div className="fs-6 fw-bold">36k followers</div>
+                        
                     </h5>
                     <p className="card-text fs-6 fw-bold my-4">{design.title}</p>
-                    <p className="card-text d-flex align-items-center justify-content-between"><div className="d-flex align-items-center justify-content-center gap-2 fs-6 fw-light"><img className='avatar' src={heart} style={{ "height": "4vh" }} />32 Votes
+                    <p className="card-text d-flex align-items-center justify-content-between"><div className="d-flex align-items-center justify-content-center gap-2 fs-6 fw-light"><img className='avatar' src={heart} style={{ "height": "4vh" }} />{design.likes} Votes
                     </div>
                         <div className="d-flex align-items-center justify-content-center gap-2 fs-6 fw-light">
-                            <img className='avatar' src={comment} style={{ "height": "4vh" }} />3 comments
+                            <img className='avatar' src={comment} style={{ "height": "4vh" }} />{design.comments} comments
                         </div>
                     </p>
                 </div>
