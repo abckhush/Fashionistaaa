@@ -90,30 +90,16 @@ exports.getAllDesigns = async(req,res)=>{
     try {
         const designs = await designModel.find().populate('createdBy').populate('likes').populate('comments').exec();
 
-        if(designs.likes){
-            likes = designs.likes.length
-        }else{
-            likes = 0;
-        }
-
-        if(designs.comments){
-            comments = designs.comments.length
-        }else{
-            comments = 0;
-        }
-
-
         const data = designs.map(design=>{
             return {
                 id:design._id,
                 title:design.title,
                 image:design.image,
                 createdBy:design.createdBy.username,
-                likes:likes,
-                comments:comments
+                likes:design.likes,
+                comments:design.comments
             }
         })
-        console.log(designs)
         if(!designs){
             return res.status(400).json({
                 success:false,
@@ -138,7 +124,8 @@ exports.addLike = async(req,res)=>{
     try {
         const user_id = req.user.id
         const post_id = req.body.postId
-        const user = User.findById(user_id);
+        console.log(user_id)
+        const user = await User.findById(user_id);
 
         if(!user){
             return res.status(404).json({
@@ -147,7 +134,7 @@ exports.addLike = async(req,res)=>{
             })
         }
 
-        const design = designModel.findById(post_id);
+        const design = await designModel.findById(post_id);
         if(!design){
             return res.status(400).json({
                 success:false,
@@ -155,6 +142,7 @@ exports.addLike = async(req,res)=>{
             })
         }
 
+       
         if (!design.likes) {
             design.likes = []; // Ensure likes array is initialized
         }
@@ -164,13 +152,20 @@ exports.addLike = async(req,res)=>{
             post_id
         })
 
-        design.likes.push(like._id);
-        await design.save();
+        /* likes:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Like',
+    }],*/
 
-       
+        design.likes.push(like);
+        await design.save(); 
+      
+     
+               
 
         return res.status(200).json({
             success:true,
+            
             message:"Post liked successfully"
         })
 
@@ -189,7 +184,7 @@ exports.removeLike = async(req,res)=>{
     try {
         const user_id = req.user.id
         const post_id = req.body.postId
-        const user = User.findById(user_id);
+        const user = await User.findById(user_id);
 
         if(!user){
             return res.status(404).json({
@@ -198,7 +193,7 @@ exports.removeLike = async(req,res)=>{
             })
         }
 
-        const design = designModel.findById(post_id);
+        const design = await designModel.findById(post_id);
         if(!design){
             return res.status(400).json({
                 success:false,
@@ -206,18 +201,30 @@ exports.removeLike = async(req,res)=>{
             })
         }
 
-        design.likes = design.likes.filter(like=>like!==user_id);
-        design.save();
+        if (!design.likes) {
+            design.likes = []; // Ensure likes array is initialized
+        }
 
-        const like = await LikeModel.findOneAndDelete({
-            user_id,
-            post_id
-        })
+        const like_to_delete = await LikeModel.findOne({ user_id, post_id });
+        
+        if (!like_to_delete) {
+            return res.status(404).json({
+                success: false,
+                message: "Like not found"
+            });
+        }
+
+        console.log("Like to delete", like_to_delete);
+
+        design.likes = design.likes.filter(like => like._id.toString() !== like_to_delete._id.toString());
+        await design.save();
+
+        await LikeModel.findByIdAndDelete(like_to_delete._id);
 
         return res.status(200).json({
-            success:true,
-            message:"Post unliked successfully"
-        })
+            success: true,
+            message: "Post unliked successfully"
+        });
         
     } catch (error) {
         return res.status(500).json({

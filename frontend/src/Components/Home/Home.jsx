@@ -2,11 +2,14 @@ import React,{useEffect, useState} from 'react'
 import DesignCard from './DesignCard'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { set } from 'mongoose'
 
 const Home = () => {
+  const host = 'http://localhost:5000/api/v1'
+
     const navigate = useNavigate()
     const [current , setCurrent] = useState('artists you follow')
+
+    
     const onClickArtist =()=>{
         setCurrent('artists you follow')
     }
@@ -25,7 +28,6 @@ const Home = () => {
         console.log('clicked')
         navigate('/designInfo')
     }
-    const host = 'http://localhost:5000/api/v1'
 
     const [designs,setDesigns] = useState([])
 
@@ -46,7 +48,7 @@ const Home = () => {
     const getAllDesigns = async() =>{
       try {
         const response = await axios.get(`${host}/design/getAllDesigns`)
-        console.log(response)
+       
 
         if(response.data.success){
          setDesigns(response.data.data)
