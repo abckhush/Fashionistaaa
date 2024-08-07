@@ -39,10 +39,10 @@ var userSchema = new mongoose.Schema({
       type:mongoose.Schema.Types.ObjectId,
       ref:'Profile'
     },
-    savedDesigns:{
+    savedDesigns:[{
       type:mongoose.Schema.Types.ObjectId,
       ref:'Design'
-    },
+    }],
     uploadedDesigns:{
       type:mongoose.Schema.Types.ObjectId,
       ref:'Design'

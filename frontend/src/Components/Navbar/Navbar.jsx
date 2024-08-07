@@ -84,7 +84,10 @@ const Navbar = () => {
                     <div className="d-flex align-items-center gap-4">
                         <button className="btn bg-dark text-light" type="submit" onClick={handleSellerClick}>Become a Seller</button>
                         <div className="">
-                            <img className="avatar rounded-circle" src={avatar} onClick={handleAvatarClick} />
+                        {
+                            sessionStorage.getItem('token')?<img className="avatar rounded-circle" src={avatar} onClick={handleAvatarClick} />:<button className="btn bg-dark text-light" type="submit" onClick={handleAvatarClick}>Login/Register</button>
+                        }
+                            
                         </div>
                     </div>
                 </div>

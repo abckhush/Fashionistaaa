@@ -411,3 +411,64 @@ exports.getDesignDetails = async(req,res)=>{
         
     }
 }
+
+
+exports.saveDesign = async(req,res)=>{
+    try {
+        const user_id = req.user.id
+        const post_id = req.body.postId
+
+        const user = await User.findById(user_id)
+        const post = await designModel.findById(post_id)
+
+        if(!user){
+            return res.status(404).json({
+                success:false,
+                message:"User not found"
+            })
+        }
+
+        if(!post){
+            return res.status(404).json({
+                success:false,
+                message:"Post not found"
+            })
+        }
+
+        const saved_design = user.push(post_id)
+        await user.save()
+
+        return res.status(200).json({
+            success:true,
+            message:"Post saved successfully"
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:error.message
+        })
+    }
+}
+
+exports.getSavedDesign = async(req,res)=>{
+    try {
+        const user_id = req.user.id
+        const user = await User.findById(user_id)
+
+        if(!user){
+            return res.status(404).json({
+                success:false,
+                message:"User not found"
+            })
+        }
+
+        
+        
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:error.message
+        })
+    }
+}
